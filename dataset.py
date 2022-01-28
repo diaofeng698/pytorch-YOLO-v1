@@ -6,6 +6,7 @@
 txt描述文件 image_name.jpg x y w h c x y w h c 这样就是说一张图片中有两个目标
 '''
 import os
+import platform
 import sys
 import os.path
 
@@ -34,9 +35,22 @@ class yoloDataset(data.Dataset):
         if isinstance(list_file, list):
             # Cat multiple list files together.
             # This is especially useful for voc07/voc12 combination.
-            tmp_file = '/tmp/listfile.txt'
-            os.system('cat %s > %s' % (' '.join(list_file), tmp_file))
-            list_file = tmp_file
+            # Linux 对于 windows 失效
+            if platform.system() == 'Linux':
+                tmp_file = '/tmp/listfile.txt'
+                os.system('cat %s > %s' % (' '.join(list_file), tmp_file))  # Linux命令用于将文件的内容拼接到tmp_file
+                list_file = tmp_file
+            elif platform.system() == 'Windows':
+                f = open('listfile.txt', 'w')
+                # 先遍历文件名
+                for filename in list_file:
+                    for line in open(filename):
+                        f.writelines(line)
+                # 关闭文件
+                f.close()
+                list_file = 'listfile.txt'
+
+
 
         with open(list_file) as f:
             lines  = f.readlines()
