@@ -35,6 +35,8 @@ Effciency has not been optimized. It may be faster... I don't know
 ~~3. Convert xml annotations to txt file, for the purpose of using dataset.py, you should put the xml_2_txt.py in the same folder of voc dataset, or change *Annotations* path in xml_2_txt.py~~ 
 
 ### 3. Train
+Run python -m visdom.server
+
 Run python train.py
 
 *Be careful:* 1. change the image file path 2. I recommend you install [visdom](https://github.com/facebookresearch/visdom) and run it
