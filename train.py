@@ -17,9 +17,9 @@ import numpy as np
 
 use_gpu = torch.cuda.is_available()
 
-file_root = '/home/xzh/data/VOCdevkit/VOC2012/allimgs/'
+file_root = r'C:\DiaoFeng_WS\DeepLearning\labelImg\PascalVOC_visual_object_classs\VOCdevkit\VOC2007\JPEGImages'
 learning_rate = 0.001
-num_epochs = 50
+num_epochs = 1
 batch_size = 24
 use_resnet = True
 if use_resnet:
@@ -86,7 +86,7 @@ optimizer = torch.optim.SGD(params, lr=learning_rate, momentum=0.9, weight_decay
 # optimizer = torch.optim.Adam(net.parameters(),lr=learning_rate,weight_decay=1e-4)
 
 # train_dataset = yoloDataset(root=file_root,list_file=['voc12_trainval.txt','voc07_trainval.txt'],train=True,transform = [transforms.ToTensor()] )
-train_dataset = yoloDataset(root=file_root,list_file=['voc2012.txt','voc2007.txt'],train=True,transform = [transforms.ToTensor()] )
+train_dataset = yoloDataset(root=file_root,list_file=['voc2007.txt'],train=True,transform = [transforms.ToTensor()] )
 train_loader = DataLoader(train_dataset,batch_size=batch_size,shuffle=True,num_workers=4)
 # test_dataset = yoloDataset(root=file_root,list_file='voc07_test.txt',train=False,transform = [transforms.ToTensor()] )
 test_dataset = yoloDataset(root=file_root,list_file='voc2007test.txt',train=False,transform = [transforms.ToTensor()] )
@@ -128,14 +128,14 @@ for epoch in range(num_epochs):
         
         pred = net(images)
         loss = criterion(pred,target)
-        total_loss += loss.data[0]
+        total_loss += loss.item()
         
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
         if (i+1) % 5 == 0:
             print ('Epoch [%d/%d], Iter [%d/%d] Loss: %.4f, average_loss: %.4f' 
-            %(epoch+1, num_epochs, i+1, len(train_loader), loss.data[0], total_loss / (i+1)))
+            %(epoch+1, num_epochs, i+1, len(train_loader), loss.item(), total_loss / (i+1)))
             num_iter += 1
             vis.plot_train_val(loss_train=total_loss/(i+1))
 
@@ -150,7 +150,7 @@ for epoch in range(num_epochs):
         
         pred = net(images)
         loss = criterion(pred,target)
-        validation_loss += loss.data[0]
+        validation_loss += loss.item()
     validation_loss /= len(test_loader)
     vis.plot_train_val(loss_val=validation_loss)
     

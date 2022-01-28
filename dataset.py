@@ -106,10 +106,16 @@ class yoloDataset(data.Dataset):
         labels (tensor) [...]
         return 7x7x30
         '''
+        # 划分的grid数量
         grid_num = 14
+        # 初始化一个14*14*30的张量
+        # 30代表2*5+20
+        # VOC20分类
         target = torch.zeros((grid_num,grid_num,30))
         cell_size = 1./grid_num
+        # calculate wide and height of boundingbox
         wh = boxes[:,2:]-boxes[:,:2]
+        # calculate center of boundingbox
         cxcy = (boxes[:,2:]+boxes[:,:2])/2
         for i in range(cxcy.size()[0]):
             cxcy_sample = cxcy[i]
