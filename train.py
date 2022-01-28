@@ -17,7 +17,7 @@ import numpy as np
 
 use_gpu = torch.cuda.is_available()
 
-file_root = r'C:\DiaoFeng_WS\DeepLearning\labelImg\PascalVOC_visual_object_classs\VOCdevkit\VOC2007\JPEGImages'
+file_root = r'C:/DiaoFeng_WS/DeepLearning/labelImg/PascalVOC_visual_object_classs/VOCdevkit/VOC2007/JPEGImages/'
 learning_rate = 0.001
 num_epochs = 1
 batch_size = 24
@@ -67,7 +67,7 @@ else:
     net.load_state_dict(dd)
 if False:
     net.load_state_dict(torch.load('best.pth'))
-print('cuda', torch.cuda.current_device(), torch.cuda.device_count())
+# print('cuda', torch.cuda.current_device(), torch.cuda.device_count())
 
 criterion = yoloLoss(7,2,5,0.5)
 if use_gpu:
@@ -143,8 +143,8 @@ for epoch in range(num_epochs):
     validation_loss = 0.0
     net.eval()
     for i,(images,target) in enumerate(test_loader):
-        images = Variable(images,volatile=True)
-        target = Variable(target,volatile=True)
+        images = Variable(images)
+        target = Variable(target)
         if use_gpu:
             images,target = images.cuda(),target.cuda()
         
