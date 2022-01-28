@@ -87,10 +87,11 @@ optimizer = torch.optim.SGD(params, lr=learning_rate, momentum=0.9, weight_decay
 
 # train_dataset = yoloDataset(root=file_root,list_file=['voc12_trainval.txt','voc07_trainval.txt'],train=True,transform = [transforms.ToTensor()] )
 train_dataset = yoloDataset(root=file_root,list_file=['voc2007.txt'],train=True,transform = [transforms.ToTensor()] )
-train_loader = DataLoader(train_dataset,batch_size=batch_size,shuffle=True,num_workers=4)
+train_loader = DataLoader(train_dataset,batch_size=batch_size,shuffle=True,num_workers=0)
+# num_workers = 0 单进程  速度会慢一些
 # test_dataset = yoloDataset(root=file_root,list_file='voc07_test.txt',train=False,transform = [transforms.ToTensor()] )
 test_dataset = yoloDataset(root=file_root,list_file='voc2007test.txt',train=False,transform = [transforms.ToTensor()] )
-test_loader = DataLoader(test_dataset,batch_size=batch_size,shuffle=False,num_workers=4)
+test_loader = DataLoader(test_dataset,batch_size=batch_size,shuffle=False,num_workers=0)
 print('the dataset has %d images' % (len(train_dataset)))
 print('the batch_size is %d' % (batch_size))
 logfile = open('log.txt', 'w')
